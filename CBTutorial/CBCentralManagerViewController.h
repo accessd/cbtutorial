@@ -15,10 +15,14 @@
 
 @property (strong, nonatomic) IBOutlet UITextView *textview;
 
-@property (strong, nonatomic) CBCentralManager *centralManager;
+@property (nonatomic, strong) CBCentralManager *centralManager;
+@property (nonatomic, strong) CBPeripheralManager *peripheralManager;
+
 @property (strong, nonatomic) CBPeripheral *discoveredPeripheral;
 @property (strong, nonatomic) NSMutableData *data;
 @property (strong, nonatomic) NSData *dataToSend;
 @property (strong, nonatomic) CBMutableCharacteristic *transferCharacteristic;
+
+
 
 @end

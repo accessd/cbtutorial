@@ -10,25 +10,34 @@
 
 @implementation CBCentralManagerViewController
 
+
 - (void)viewDidLoad {
-    _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
-    _data = [[NSMutableData alloc] init];
-    
+
     [super viewDidLoad];
+     _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+    
+    _peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
+    
+   
+    
+     _data = [[NSMutableData alloc] init];
 }
 
+
+
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central {
-    // You should test all scenarios
     if (central.state != CBCentralManagerStatePoweredOn) {
         return;
     }
     
     if (central.state == CBCentralManagerStatePoweredOn) {
-        // Scan for devices
         [_centralManager scanForPeripheralsWithServices:nil options:@{ CBCentralManagerScanOptionAllowDuplicatesKey : @YES }];
+        
         NSLog(@"Scanning started");
     }
 }
+
+
 
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI {
     
@@ -43,9 +52,16 @@
         NSLog(@"%@", data);
         
         [_textview setText:data];
-        
         [_centralManager connectPeripheral:peripheral options:nil];
+
+    
     //}
+}
+
+- (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral {
+
+    NSLog(@"peripheral");
+    [_peripheralManager startAdvertising:nil];
 }
 
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error {
@@ -53,26 +69,6 @@
     [self cleanup];
 }
 
-//- (void)cleanup {
-//    
-//    // See if we are subscribed to a characteristic on the peripheral
-//    if (_discoveredPeripheral.services != nil) {
-//        for (CBService *service in _discoveredPeripheral.services) {
-//            if (service.characteristics != nil) {
-//                for (CBCharacteristic *characteristic in service.characteristics) {
-//                    if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:TRANSFER_CHARACTERISTIC_UUID]]) {
-//                        if (characteristic.isNotifying) {
-//                            [_discoveredPeripheral setNotifyValue:NO forCharacteristic:characteristic];
-//                            return;
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    
-//    [_centralManager cancelPeripheralConnection:_discoveredPeripheral];
-//}
 
 - (void)cleanup
 {

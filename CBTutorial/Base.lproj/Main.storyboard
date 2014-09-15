@@ -54,7 +54,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="There is log" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="382-if-okc">
-                                <rect key="frame" x="20" y="114" width="280" height="233"/>
+                                <rect key="frame" x="27" y="284" width="280" height="233"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
