@@ -112,8 +112,7 @@
         NSLog(@"Characteristic: %@", characteristic.UUID);
         
         if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:TRANSFER_CHARACTERISTIC_UUID]]) {
-            const char *s = DOOR_OPEN_CODE;
-            NSData * data=[NSData dataWithBytes:s length:strlen(s)];
+            NSData * data=[NSData dataWithBytes:DOOR_OPEN_CODE length:strlen(DOOR_OPEN_CODE)];
         
             NSLog(@"Writing value for characteristic %@", characteristic);
             [_discoveredPeripheral writeValue:data forCharacteristic:characteristic
