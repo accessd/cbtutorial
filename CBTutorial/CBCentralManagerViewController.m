@@ -31,7 +31,8 @@
     }
     
     if (central.state == CBCentralManagerStatePoweredOn) {
-        [_centralManager scanForPeripheralsWithServices:nil options:@{ CBCentralManagerScanOptionAllowDuplicatesKey : @YES }];
+        #define DEVICE_INFO_SERVICE_UUID @"384abbc5-9ad6-4eaa-86af-1ee629ba9838"
+        [_centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:DEVICE_INFO_SERVICE_UUID]] options:@{ CBCentralManagerScanOptionAllowDuplicatesKey : @YES }];
         
         NSLog(@"Scanning started");
     }
