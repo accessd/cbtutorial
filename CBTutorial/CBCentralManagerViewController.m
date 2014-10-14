@@ -18,10 +18,10 @@
     
     _peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
     
-   
-    
+
      _data = [[NSMutableData alloc] init];
 }
+
 
 
 
@@ -32,7 +32,10 @@
     
     if (central.state == CBCentralManagerStatePoweredOn) {
         #define DEVICE_INFO_SERVICE_UUID @"384abbc5-9ad6-4eaa-86af-1ee629ba9838"
-        [_centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:DEVICE_INFO_SERVICE_UUID]] options:@{ CBCentralManagerScanOptionAllowDuplicatesKey : @YES }];
+        
+        NSDictionary    *options    = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:CBCentralManagerScanOptionAllowDuplicatesKey];
+        
+        [_centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:DEVICE_INFO_SERVICE_UUID]] options:options];
         
         NSLog(@"Scanning started");
     }
@@ -67,7 +70,7 @@
 
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error {
     NSLog(@"Failed to connect");
-    [self cleanup];
+//[self cleanup];
 }
 
 
@@ -81,6 +84,7 @@
     // If we've got this far, we're connected, but we're not subscribed, so we just disconnect
     [self.centralManager cancelPeripheralConnection:_discoveredPeripheral];
 }
+
 
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral {
     NSLog(@"Connected");
@@ -107,6 +111,7 @@
     if (error) {
         [self cleanup];
         return;
+        
     }
     
     for (CBCharacteristic *characteristic in service.characteristics) {
@@ -121,6 +126,16 @@
         
         
             [peripheral setNotifyValue:YES forCharacteristic:characteristic];
+#define DEVICE_INFO_SERVICE_UUID @"384abbc5-9ad6-4eaa-86af-1ee629ba9838"
+            
+            NSDictionary    *options    = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:CBCentralManagerScanOptionAllowDuplicatesKey];
+            UILocalNotification *notification = [[UILocalNotification alloc] init];
+            
+            
+                notification.alertBody = NSLocalizedString(@"You're inside the region", @"");
+            [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+
+            [_centralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:DEVICE_INFO_SERVICE_UUID]] options:options];
         }
     }
 }
